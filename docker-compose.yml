@@ -1,0 +1,26 @@
+services:
+  web-app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./flask_app:/flask_app
+    environment:
+      - JWT_SECRET_KEY=36d9ff439ad1454ca45d1154bdf27f00
+      - DB_HOST=database
+      - DB_NAME=flask_app
+      - DB_USER=db_user
+      - DB_PASS=password
+    command: >
+      sh -c "python manage.py"
+
+    depends_on:
+      - database
+
+  database:
+    image: postgres:14.3-alpine
+    environment:
+      - POSTGRES_DB=flask_app
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=password
